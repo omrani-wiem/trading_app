@@ -11,32 +11,29 @@ function Login({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  //cette partie concerne l'option de connexion avec le compte google
-  //On définit une fonction fléchée qui sera appelée au clic sur le bouton Google.
   const handleGoogleLogin = () => {
     setError('');
-    setLoading(true);// pendant la vérification
+    setLoading(true);
     // Simulation de la connexion Google
-    setTimeout(() => {//ne fait rien d’autre que attendre 1 seconde avant d’afficher l’alerte
+    setTimeout(() => {
       alert('⚠️ Fonctionnalité Google OAuth en développement.\n\nVeuillez créer un compte pour vous connecter.');
       setLoading(false);
-    }, 1000);//1000 c'est le temps d'attente egale a 1s
+    }, 1000);
   };
-//c’est la fonction qui garde ton formulaire synchronisé avec ce que l’utilisateur tape.
+
   const handleInputChange = (e) => {
-    const { name, value } = e.target; //e.target et le nom du champ et value c'est ce que l'utilisateur a tapez
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev, //garde les anciennes valeurs.
       [name]: value //modifie seulement  le champ qui a changé
     }));
   };
 
-  const handleSubmit = async (e) => {//fonction fleche quand va l'appeler quand on clic sur se connecter
+  const handleSubmit = async (e) => {
     e.preventDefault();//Empêche le rechargement automatique de la page quand le formulaire est soumis.
     setError('');
     setLoading(true);
 
-    // Validation simple
     if (!formData.email || !formData.password) {
       setError('Tous les champs sont requis');
       setLoading(false);
@@ -44,20 +41,18 @@ function Login({ onLogin }) {
     }
 
     try {
-      // Tentative de connexion avec l'API
-      const response = await fetch('http://localhost:5000/auth/login', {//envoie une requête HTTP à ton serveur (localhost:5000) pour vérifier les identifiants.
-        method: 'POST',//on envoie des données au serveur.
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
         headers: {//on précise que les données sont au format JSON.
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),// on envoie les informations du formulaire au serveur 
+        body: JSON.stringify(formData), 
       });
 
-      const data = await response.json(); // on attend la reponse avant de continuer
+      const data = await response.json();
 
       if (response.ok) {
-        // Connexion réussie
-        localStorage.setItem('token', data.token);// on stocke le token et les infos de l'utilisateur dans le stockage local du navigateur.
+        localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         onLogin();
         navigate('/dashboard');
@@ -67,8 +62,8 @@ function Login({ onLogin }) {
     } catch (error) {
       console.error('Erreur de connexion:', error);
       setError('Erreur de connexion');
-    } finally {//s'execute dans tous les cas
-      setLoading(false);//remet l'etat loading a false pour reactivier le bouton ou cacher le spinner
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +73,7 @@ function Login({ onLogin }) {
       minHeight: '100vh',
       display: 'flex'
     }}>
-      {/* Section gauche - Informations */}
+    
       <div style={{
         flex: '1',
         background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%)',
@@ -87,10 +82,10 @@ function Login({ onLogin }) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        position: 'relative',//pour placer les éléments décoratifs par dessus
+        position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Éléments décoratifs modernes */}
+
         <div style={{
           position: 'absolute',
           top: '10%',
@@ -122,7 +117,7 @@ function Login({ onLogin }) {
           animation: 'float 7s ease-in-out infinite'
         }}></div>
 
-        {/* Forme géométrique moderne */}
+        
         <div style={{
           position: 'absolute',
           top: '30%',
@@ -135,12 +130,12 @@ function Login({ onLogin }) {
         }}></div>
 
         <div style={{ position: 'relative', zIndex: 2 }}>
-          {/* Logo/Icon principal */}
+        
           <div style={{
             display: 'flex',
-            justifyContent: 'center',//centree horizontalement
-            alignItems: 'center',//centree verticalement
-            marginBottom: '40px'//espace en dessous
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '40px'
           }}>
             <div style={{
               width: '100px',
@@ -187,9 +182,9 @@ function Login({ onLogin }) {
               backgroundClip: 'text'
             }}>Bienvenue</span><br/>
             <span style={{
-              background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',//Crée un dégradé de couleurs en arrière-plan.
+              background: 'linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)',
               WebkitBackgroundClip: 'text',//le texte prend la couleur du dégradé défini en arrière-plan. et webkit est necessaire pour la comptabitlite avec chrome  safari et a autres navigaterus basés sur webkit
-              WebkitTextFillColor: 'transparent',//Rend le texte transparent pour laisser apparaître le dégradé
+              WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',//Version standard pour que le dégradé s’applique au texte
               filter: 'drop-shadow(0 2px 8px rgba(59, 130, 246, 0.3))'//Ajoute une ombre portée douce autour du texte.
             }}>TradingPro</span>
@@ -221,7 +216,6 @@ function Login({ onLogin }) {
             Connectez-vous pour accéder à votre tableau de bord et gérer vos investissements avec précision
           </p>
 
-          {/* Illustration médicale moderne */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -242,7 +236,6 @@ function Login({ onLogin }) {
               boxShadow: '0 30px 60px rgba(0,0,0,0.15), inset 0 0 40px rgba(255,255,255,0.05)',
               overflow: 'hidden'
             }}>
-              {/* Éléments décoratifs internes améliorés */}
               <div style={{
                 position: 'absolute',
                 top: '25px',
@@ -277,7 +270,6 @@ function Login({ onLogin }) {
                 boxShadow: '0 0 12px rgba(245, 101, 101, 0.3)'
               }}></div>
 
-              {/* Icônes principales améliorées */}
               <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -369,7 +361,6 @@ function Login({ onLogin }) {
         </div>
       </div>
 
-      {/* Section droite - Formulaire */}
       <div style={{
         flex: '1',
         backgroundColor: '#f8fafc',
@@ -384,7 +375,6 @@ function Login({ onLogin }) {
           width: '100%',
           maxWidth: '480px'
         }}>
-          {/* Retour à l'accueil */}
           <div style={{ marginBottom: '30px' }}>
             <Link to="/" style={{
               display: 'flex',
@@ -420,8 +410,6 @@ function Login({ onLogin }) {
             Connectez-vous à votre compte TradingPro
           </p>
 
-          {/* Compte de démonstration */}
-          {/* Option Google */}
           <button 
             onClick={handleGoogleLogin}
             disabled={loading}
@@ -485,7 +473,6 @@ function Login({ onLogin }) {
           )}
 
           <form onSubmit={handleSubmit}>
-            {/* Email */}
             <div style={{ marginBottom: '20px' }}>
               <label style={{
                 display: 'block',
@@ -523,7 +510,6 @@ function Login({ onLogin }) {
               />
             </div>
 
-            {/* Mot de passe */}
             <div style={{ marginBottom: '25px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <label style={{
@@ -598,7 +584,6 @@ function Login({ onLogin }) {
               </div>
             </div>
 
-            {/* Bouton de connexion */}
             <button
               type="submit"
               disabled={loading}

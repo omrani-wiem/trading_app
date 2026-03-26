@@ -2,24 +2,10 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
-
-const Register = () => {
-  return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      <h2>Page d'inscription</h2>
-      <p>Formulaire à ajouter plus tard</p>
-    </div>
-  );
-};
-
-const Dashboard = () => {
-  return (
-    <div style={{ padding: '50px', textAlign: 'center' }}>
-      <h2>Tableau de bord</h2>
-      <p>Contenu du tableau de bord à ajouter</p>
-    </div>
-  );
-};
+import Register from "./components/Register";
+import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
+import Dasheboard from "./components/Dasheboard";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,11 +40,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
             path="/dashboard"
             element={
               isAuthenticated ? 
-                <Dashboard /> : 
+                <Dasheboard onLogout={handleLogout} currentUser={currentUser} /> : 
                 <Navigate to="/login" replace />
             }
           />
